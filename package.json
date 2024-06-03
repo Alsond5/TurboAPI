@@ -1,7 +1,26 @@
 {
   "name": "turboapi",
+  "version": "0.1.0",
+  "description": "A lightweight and high-performance web framework for Bun.js",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun run examples/basic/index.ts"
+  },
+  "keywords": [
+    "bun",
+    "web framework",
+    "typescript"
+  ],
+  "author": {
+    "name": "Alsond5",
+    "url": "https://github.com/Alsond5/TurboAPI"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Alsond5/TurboAPI.git"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

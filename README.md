@@ -1,4 +1,7 @@
 # TurboAPI
+[![Static Badge](https://img.shields.io/badge/status-in_development-5FBB97)](https://github.com/Alsond5/TurboAPI)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/Alsond5/TurboAPI)](https://github.com/Alsond5/TurboAPI)
+[![GitHub Repo stars](https://img.shields.io/github/stars/Alsond5/TurboAPI?style=flat)](https://github.com/Alsond5/TurboAPI)
 
 Welcome to TurboAPI, a fast and efficient web framework, specifically designed for the Bun.js runtime. TurboAPI aims to provide a simple and intuitive API for building web applications and APIs, with an emphasis on performance and ease of use
 
