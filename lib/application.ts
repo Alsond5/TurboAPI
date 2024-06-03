@@ -2,10 +2,52 @@ import { Router } from "./router/route";
 import { BunRequest } from "./request";
 import { BunResponse } from "./response";
 
-import type { Server } from "bun";
+import type { Server, WebSocketHandler } from "bun";
+import type { CloseHandler, DrainHandler, MessageHandler, OpenHandler } from "./websocket";
 
 export class TurboAPI extends Router {
     private static server?: TurboAPI;
+    
+    private webSocketPathname?: string;
+    private webSocketHandler: WebSocketHandler<unknown> = {
+        message(ws, message) {
+            return;
+        },
+    }
+    private webSocketData: (req: BunRequest) => any | Promise<any> = (req) => undefined;
+
+    ws<DataType = undefined>(
+        path: string,
+        callback?: (req: BunRequest) => DataType | Promise<DataType>
+    ) {
+        this.webSocketPathname = path;
+
+        if (callback) this.webSocketData = async (req: BunRequest) => ({ data: await callback(req) });
+    }
+
+    message<DataType>(
+        listener: MessageHandler<DataType>
+    ) {
+        this.webSocketHandler.message = listener;
+    }
+
+    open<DataType>(
+        listener: OpenHandler<DataType>
+    ) {
+        this.webSocketHandler.open = listener;
+    }
+
+    close<DataType>(
+        listener: CloseHandler<DataType>
+    ) {
+        this.webSocketHandler.close = listener;
+    }
+
+    drain<DataType>(
+        listener: DrainHandler<DataType>
+    ) {
+        this.webSocketHandler.drain = listener;
+    }
 
     constructor() {
         super();
@@ -38,14 +80,24 @@ export class TurboAPI extends Router {
             port: port,
             fetch: async (req, server) => {
                 return this.handleRequest(req, server);
-            }
+            },
+            websocket: this.webSocketHandler
         });
 
         return server;
     }
 
-    private async handleRequest(request: Request, server: Server): Promise<Response> {
+    private async handleRequest(request: Request, server: Server): Promise<Response | void> {
         const req = this.parseRequest(request);
+
+        if (
+            this.webSocketPathname &&
+            this.webSocketPathname === req.pathname() &&
+            server.upgrade(request, await this.webSocketData(req))
+        ) {
+            return;
+        }
+
         const res = new BunResponse();
         
         const trieTree = this.getTree(req.method);

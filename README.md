@@ -9,7 +9,8 @@ Welcome to TurboAPI, a fast and efficient web framework, specifically designed f
 * Middleware Support: Easily extend your application with middleware functions [In development].
 * Routing: Simple and flexible routing to handle HTTP requests.
 * Extensible: Designed to be modular and easily extensible to fit your needs.
-* Lightweight: Minimal dependencies to keep your applications lean and fast
+* Lightweight: Minimal dependencies to keep your applications lean and fast.
+* WebSocket: TurboAPI supports server-side WebSockets. Very fast and easy to use.
 
 ## Usage
 
